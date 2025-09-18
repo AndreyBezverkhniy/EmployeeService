@@ -19,6 +19,10 @@ public class Employee {
         this.info = info;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
     public String getName() {
         return name;
     }

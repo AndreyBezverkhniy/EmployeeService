@@ -1,7 +1,7 @@
 package pro.sky.employeeservice.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.employeeservice.model.Employee;
@@ -24,20 +24,20 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee addEmployee(@PathVariable(name = "name") String name,
-                                @PathVariable(name = "surname") String surname) {
+    public Employee addEmployee(@RequestParam(name = "name") String name,
+                                @RequestParam(name = "surname") String surname) {
         return employeeService.addEmployee(name, surname);
     }
 
     @GetMapping("/find")
-    public Employee findEmployee(@PathVariable(name = "name") String name,
-                                 @PathVariable(name = "surname") String surname) {
+    public Employee findEmployee(@RequestParam(name = "name") String name,
+                                 @RequestParam(name = "surname") String surname) {
         return employeeService.findEmployee(name, surname);
     }
 
     @GetMapping("/remove")
-    public Employee removeEmployee(@PathVariable(name = "name") String name,
-                                   @PathVariable(name = "surname") String surname) {
+    public Employee removeEmployee(@RequestParam(name = "name") String name,
+                                   @RequestParam(name = "surname") String surname) {
         return employeeService.removeEmployee(name, surname);
     }
 }
