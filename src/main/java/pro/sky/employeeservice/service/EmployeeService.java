@@ -30,8 +30,8 @@ public class EmployeeService {
         if (employees.size() >= maxSize) {
             throw new EmployeeStorageIsFullException();
         }
-        EmployeeId employeeId = new EmployeeId(name, surname);
         Employee employee = new Employee(name, surname);
+        EmployeeId employeeId=employee.getId();
         if (employees.containsKey(employeeId)) {
             throw new EmployeeAlreadyAddedException();
         }

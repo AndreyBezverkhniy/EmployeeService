@@ -1,5 +1,7 @@
 package pro.sky.employeeservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 public class Employee {
@@ -50,5 +52,10 @@ public class Employee {
         sb.append(", info='").append(info).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    @JsonIgnore
+    public EmployeeId getId() {
+        return new EmployeeId(name, surname);
     }
 }
