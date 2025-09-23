@@ -7,10 +7,8 @@ import pro.sky.employeeservice.exception.EmployeeStorageIsFullException;
 import pro.sky.employeeservice.model.Employee;
 import pro.sky.employeeservice.model.EmployeeId;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -19,7 +17,16 @@ public class EmployeeService {
 
     public EmployeeService() {
         employees = new HashMap<EmployeeId, Employee>();
-        maxSize = 3;
+        maxSize = 10;
+        Employee arr[] = {
+                new Employee("A", "X", 1, 500),
+                new Employee("B", "Y", 1, 1500),
+                new Employee("C", "Z", 1, 500),
+                new Employee("D", "W", 2, 5000),
+        };
+        for (Employee employee : arr) {
+            employees.put(employee.getId(), employee);
+        }
     }
 
     public Collection<Employee> getAll() {
@@ -31,7 +38,7 @@ public class EmployeeService {
             throw new EmployeeStorageIsFullException();
         }
         Employee employee = new Employee(name, surname);
-        EmployeeId employeeId=employee.getId();
+        EmployeeId employeeId = employee.getId();
         if (employees.containsKey(employeeId)) {
             throw new EmployeeAlreadyAddedException();
         }
@@ -54,5 +61,15 @@ public class EmployeeService {
         }
         Employee removedEmployee = employees.remove(employeeId);
         return removedEmployee;
+    }
+
+    public Employee setDepartmentForEmployee(String name, String surname, Integer departmentId) {
+        EmployeeId employeeId = new EmployeeId(name, surname);
+        if (!employees.containsKey(employeeId)) {
+            throw new EmployeeNotFoundException();
+        }
+        Employee employee = employees.get(employeeId);
+        employee.setOtdel(departmentId);
+        return employee;
     }
 }

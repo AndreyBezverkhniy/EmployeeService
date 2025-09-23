@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.employeeservice.model.Employee;
+import pro.sky.employeeservice.model.EmployeeId;
+import pro.sky.employeeservice.service.DepartmentService;
 import pro.sky.employeeservice.service.EmployeeService;
 
 import java.util.Collection;
@@ -39,5 +41,12 @@ public class EmployeeController {
     public Employee removeEmployee(@RequestParam(name = "name") String name,
                                    @RequestParam(name = "surname") String surname) {
         return employeeService.removeEmployee(name, surname);
+    }
+
+    @GetMapping("/set-department-for-employee")
+    public Employee setDepartmentForEmployee(@RequestParam String name,
+                                             @RequestParam String surname,
+                                             @RequestParam Integer departmentId) {
+        return employeeService.setDepartmentForEmployee(name,surname,departmentId);
     }
 }
