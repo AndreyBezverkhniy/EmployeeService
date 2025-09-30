@@ -1,6 +1,7 @@
 package pro.sky.employeeservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -11,8 +12,8 @@ public class Employee {
     private int salary;
 
     public Employee(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
+        this.name = StringUtils.capitalize(StringUtils.lowerCase(name));
+        this.surname = StringUtils.capitalize(StringUtils.lowerCase(surname));
         this.otdel = 0;
         this.salary = 0;
     }

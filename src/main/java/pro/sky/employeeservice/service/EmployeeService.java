@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,9 +34,11 @@ public class EmployeeService {
         }
     }
 
-    private boolean checkNameAndSurname(String name, String surname) {
-        return name != null && StringUtils.isAlpha(name) &&
-                surname != null && StringUtils.isAlpha(surname);
+    private void throwWhenInvalidNaming(String name, String surname) {
+        if (name == null || !StringUtils.isAlpha(name) ||
+                surname == null || !StringUtils.isAlpha(surname)) {
+            throw new EmployeeNamingException();
+        }
     }
 
     private String normalizeName(String name) {
@@ -49,11 +50,7 @@ public class EmployeeService {
     }
 
     public Employee addEmployee(String name, String surname) {
-        if (!checkNameAndSurname(name, surname)) {
-            throw new EmployeeNamingException();
-        }
-        name = normalizeName(name);
-        surname = normalizeName(surname);
+        throwWhenInvalidNaming(name, surname);
         if (employees.size() >= maxSize) {
             throw new EmployeeStorageIsFullException();
         }
@@ -67,11 +64,7 @@ public class EmployeeService {
     }
 
     public Employee findEmployee(String name, String surname) {
-        if (!checkNameAndSurname(name, surname)) {
-            throw new EmployeeNamingException();
-        }
-        name = normalizeName(name);
-        surname = normalizeName(surname);
+        throwWhenInvalidNaming(name, surname);
         EmployeeId employeeId = new EmployeeId(name, surname);
         if (!employees.containsKey(employeeId)) {
             throw new EmployeeNotFoundException();
@@ -80,11 +73,7 @@ public class EmployeeService {
     }
 
     public Employee removeEmployee(String name, String surname) {
-        if (!checkNameAndSurname(name, surname)) {
-            throw new EmployeeNamingException();
-        }
-        name = normalizeName(name);
-        surname = normalizeName(surname);
+        throwWhenInvalidNaming(name, surname);
         EmployeeId employeeId = new EmployeeId(name, surname);
         if (!employees.containsKey(employeeId)) {
             throw new EmployeeNotFoundException();
@@ -94,11 +83,7 @@ public class EmployeeService {
     }
 
     public Employee setDepartmentForEmployee(String name, String surname, Integer departmentId) {
-        if (!checkNameAndSurname(name, surname)) {
-            throw new EmployeeNamingException();
-        }
-        name = normalizeName(name);
-        surname = normalizeName(surname);
+        throwWhenInvalidNaming(name, surname);
         EmployeeId employeeId = new EmployeeId(name, surname);
         if (!employees.containsKey(employeeId)) {
             throw new EmployeeNotFoundException();

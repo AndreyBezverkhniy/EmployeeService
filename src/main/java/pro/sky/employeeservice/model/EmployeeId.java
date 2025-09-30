@@ -1,5 +1,8 @@
 package pro.sky.employeeservice.model;
 
+import ch.qos.logback.core.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 
 public class EmployeeId {
@@ -7,8 +10,8 @@ public class EmployeeId {
     private final String surname;
 
     public EmployeeId(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
+        this.name = StringUtils.capitalize(StringUtils.lowerCase(name));
+        this.surname = StringUtils.capitalize(StringUtils.lowerCase(surname));
     }
 
     @Override
