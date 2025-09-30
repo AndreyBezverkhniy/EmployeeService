@@ -2,13 +2,19 @@ package pro.sky.employeeservice.service;
 
 import org.springframework.stereotype.Service;
 import pro.sky.employeeservice.exception.EmployeeAlreadyAddedException;
+import pro.sky.employeeservice.exception.EmployeeNamingException;
 import pro.sky.employeeservice.exception.EmployeeNotFoundException;
 import pro.sky.employeeservice.exception.EmployeeStorageIsFullException;
 import pro.sky.employeeservice.model.Employee;
 import pro.sky.employeeservice.model.EmployeeId;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class EmployeeService {
@@ -29,11 +35,25 @@ public class EmployeeService {
         }
     }
 
+    private boolean checkNameAndSurname(String name, String surname) {
+        return name != null && StringUtils.isAlpha(name) &&
+                surname != null && StringUtils.isAlpha(surname);
+    }
+
+    private String normalizeName(String name) {
+        return StringUtils.capitalize(StringUtils.lowerCase(name));
+    }
+
     public Collection<Employee> getAll() {
         return List.copyOf(employees.values());
     }
 
     public Employee addEmployee(String name, String surname) {
+        if (!checkNameAndSurname(name, surname)) {
+            throw new EmployeeNamingException();
+        }
+        name = normalizeName(name);
+        surname = normalizeName(surname);
         if (employees.size() >= maxSize) {
             throw new EmployeeStorageIsFullException();
         }
@@ -47,6 +67,11 @@ public class EmployeeService {
     }
 
     public Employee findEmployee(String name, String surname) {
+        if (!checkNameAndSurname(name, surname)) {
+            throw new EmployeeNamingException();
+        }
+        name = normalizeName(name);
+        surname = normalizeName(surname);
         EmployeeId employeeId = new EmployeeId(name, surname);
         if (!employees.containsKey(employeeId)) {
             throw new EmployeeNotFoundException();
@@ -55,6 +80,11 @@ public class EmployeeService {
     }
 
     public Employee removeEmployee(String name, String surname) {
+        if (!checkNameAndSurname(name, surname)) {
+            throw new EmployeeNamingException();
+        }
+        name = normalizeName(name);
+        surname = normalizeName(surname);
         EmployeeId employeeId = new EmployeeId(name, surname);
         if (!employees.containsKey(employeeId)) {
             throw new EmployeeNotFoundException();
@@ -64,6 +94,11 @@ public class EmployeeService {
     }
 
     public Employee setDepartmentForEmployee(String name, String surname, Integer departmentId) {
+        if (!checkNameAndSurname(name, surname)) {
+            throw new EmployeeNamingException();
+        }
+        name = normalizeName(name);
+        surname = normalizeName(surname);
         EmployeeId employeeId = new EmployeeId(name, surname);
         if (!employees.containsKey(employeeId)) {
             throw new EmployeeNotFoundException();
